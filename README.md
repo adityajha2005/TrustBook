@@ -1,3 +1,22 @@
+# Run Instructions
+
+### Pre-requisities
+For front-end
+**Vite**
+**React**
+**Node.js**
+For smart contract(development only)
+**Rust**
+**Move**
+**Aptos-lab tools**
+
+### Run Commands
+```
+cd TrustBook
+npm install
+npm run dev
+```
+
 # Main Idea-
 
 Our product is a SocialFi system. Basic. Well, we have used a lot of Social Media apps, but their main problems were encryption/security and bots-spammers. So why not make everything public; our app would be aimed towards people who want to opiniate their view, but on their real identity.
@@ -31,10 +50,10 @@ Our platform stands by its security, as our users will be communicating with the
 
 # Future Plans-
 
-## Tokenization-
+### Tokenization-
 We plan to include tokens such as NFTs as proof of transaction to make the user experience more interactive.
 
-## 2FA-
+### 2FA-
 To further encrypt and secure a user account, a 2-Factor Authentication system will be applicable, which will retrieve the user’s mobile number and e-mail id (whichever applicable) and push an SMS to it, which will be required to authenticate the registration process.
 
 This number will be pulled from Anon Aadhar itself, by writing and deploying and entirely new circom  circuit.
@@ -75,3 +94,10 @@ An RWA fractionalization and marketplace system that was originally deployed on 
 
 ## EcoZap-
 A carbon-credit marketplace built on Ethereum that promoted the use of carbon credit trading to save up on emissions and promote a greener and safer environment. Planned to shift ecosystem to faster transactional speeds and handle additional traffic.
+
+
+# Team Members-
+
+## Shresth Shroff
+## Aditya Jha
+## Aditya Anjana
