@@ -1,13 +1,13 @@
 # Run Instructions
 
 ### Pre-requisities
-For front-end
-**Vite**
-**React**
-**Node.js**
-For smart contract(development only)
-**Rust**
-**Move**
+For front-end <br />
+**Vite** <br />
+**React** <br />
+**Node.js** <br /> <br />
+For smart contract(development only) <br />
+**Rust** <br />
+**Move** <br />
 **Aptos-lab tools**
 
 ### Run Commands
