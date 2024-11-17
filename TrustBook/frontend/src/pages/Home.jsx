@@ -10,7 +10,7 @@ const Home = () => {
 many things. One of them is learning new skills. In this article, we'll look at some of the best 
 Open Source React projects on GitHub that you can use to quickly boost your hands-on React 
 learning and coding experience."
-          username="krishnav"
+          username="Aditya Jha"
           img="/testimg.png"
         />
         <Post
@@ -18,7 +18,7 @@ learning and coding experience."
 many things. One of them is learning new skills. In this article, we'll look at some of the best 
 Open Source React projects on GitHub that you can use to quickly boost your hands-on React 
 learning and coding experience."
-          username="krishnav"
+          username="Aditya Anjana"
           img="/testimg.png"
         />
         <Post
@@ -26,7 +26,7 @@ learning and coding experience."
 many things. One of them is learning new skills. In this article, we'll look at some of the best 
 Open Source React projects on GitHub that you can use to quickly boost your hands-on React 
 learning and coding experience."
-          username="krishnav"
+          username="Shresth Shroff"
           img="/Character-falling.png"
         />
       </div>

@@ -25,25 +25,41 @@ const useMetaMaskStore = create((set) => ({
   metaMaskIsConnected: false,
   evmProvider: null,
   connectMetaMask: async () => {
-    if (window.ethereum !== null) {
-      let provider = new BrowserProvider(window.ethereum);
-      let network = await provider.getNetwork();
-      if (network.chainId !== 31337n) {
+    if (!window.ethereum) {
+      alert("MetaMask is not installed. Please install MetaMask and try again.");
+      return;
+    }
+
+    try {
+      const provider = new BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+
+      if (network.chainId !== BigInt("0xAA36A7")) {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
           params: [networkConfig],
         });
-        provider = new BrowserProvider(window.ethereum);
       }
+
+      const signer = await provider.getSigner();
+      console.log("Signer retrieved:", signer);
+
       set(() => ({
         evmProvider: provider,
         metaMaskIsConnected: true,
       }));
-    } else {
-      throw new Error("MetaMask not Found");
+    } catch (error) {
+      console.error("Error connecting to MetaMask:", error);
+
+      if (error.code === 4001) {
+        alert("Connection request was rejected.");
+      } else {
+        alert("Failed to connect to MetaMask. Check the console for details.");
+      }
     }
   },
 }));
+  
 
 
 const signer = await new BrowserProvider(window.ethereum).getSigner();

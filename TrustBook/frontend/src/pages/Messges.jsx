@@ -6,8 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Messages = () => {
   const [messageList, setMessageList] = useState([
-    { username: "Krishnav", message: "Hello!" },
-    { username: "Krishnav", message: "Which colour T-Shirt would you like" },
+    { username: "Shresth", message: "Hello!" },
+    { username: "Shresth", message: "Which colour T-Shirt would you like" },
   ]);
   const [inputValue, setInputValue] = useState("");
 
@@ -24,14 +24,14 @@ const Messages = () => {
   return (
     <div className="min-h-screen flex justify-around w-screen ml-[15vw] p-14 items-center bg-[#14162E]">
       <ScrollArea className="h-[70vh] bg-[#1D1932] rounded-xl w-[27vw]">
-        <Contact src="/Character-falling.png" username="Krishnav" />
-        <Contact src="/Character-falling.png" username="Vardan" />
-        <Contact src="/Character-falling.png" username="Jatin" />
-        <Contact src="/Character-falling.png" username="Shressth" />
+        <Contact src="/Character-falling.png" username="Shresth" />
+        <Contact src="/Character-falling.png" username="Aditya Jha" />
+        <Contact src="/Character-falling.png" username="Aditya Anjana" />
+        {/* <Contact src="/Character-falling.png" username="Shressth" /> */}
         {/* Add more contacts as needed */}
       </ScrollArea>
       <ScrollArea className="h-[70vh] relative bg-[#1D1932] rounded-xl w-[40vw]">
-        <Contact src="/Character-falling.png" username="Krishnav" />
+        <Contact src="/Character-falling.png" username="Shresth" />
 
         <div className="p-4 flex flex-col gap-2 overflow-y-auto">
           {messageList.map((msg, index) => (

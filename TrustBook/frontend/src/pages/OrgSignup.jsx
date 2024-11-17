@@ -12,7 +12,7 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import WalletConnect from "walletconnect";
-
+import Web3 from "web3";
 const OrgRegister = () => {
   const [connected, setConnected] = useState(false);
   const [GstNum, setGstNum] = useState("");
@@ -35,18 +35,240 @@ const OrgRegister = () => {
     setConnected(true);
   };
 
-  const handleMetamaskConnection = async () => {
-    console.log("Attempting MetaMask connection...");
+    const[accounts,setAccounts]=useState(null);
+  // const handleMetamaskConnection = async () => {
+  //   console.log("Attempting MetaMask connection...");
     
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
+  //   if (typeof window.ethereum !== "undefined") {
+  //     try {
+  //       await window.ethereum.request({ method: "eth_requestAccounts" });
   
-        const accounts = await window.ethereum.request({
-          method: "eth_accounts",
-        });
+  //       const accounts = await window.ethereum.request({
+  //         method: "eth_accounts",
+  //       });
         
  
+  //       if (accounts.length > 0) {
+  //         console.log("Connected to MetaMask:", accounts[0]);
+          
+  //         const userData = {
+  //           address: accounts[0],
+  //           gstNum: GstNum,
+  //           orgName: orgData.name,
+  //           orgEntity: orgData.entity,
+  //           orgRegDate: orgData.reg_date,
+  //         };
+          
+  //         login(userData);
+  //         alert("Metamask Connected")
+  //         navigate("/marketplace");
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to connect to MetaMask", error);
+  //     }
+  //   } else {
+  //     console.log("Please install MetaMask!");
+  //   }
+  // };
+  const handleMetamaskConnection = async () => {
+    try {
+      if (window.ethereum?.isMetaMask) {
+        // Initialize web3
+        const web3Instance = new Web3(window.ethereum);
+        const accounts = await web3Instance.eth.requestAccounts();
+        setAccounts(accounts);
+  
+        if (accounts.length > 0) {
+          console.log("Connected to MetaMask:", accounts[0]);
+          
+          // const userData = {
+          //   address: accounts[0],
+          //   gstNum: GstNum,
+          //   orgName: orgData.name,
+          //   orgEntity: orgData.entity,
+          //   orgRegDate: orgData.reg_date,
+          // };
+          
+          await login(userData);
+          alert("Metamask Connected");
+          navigate("/marketplace");
+        }
+      } else {
+        alert("Please install MetaMask!");
+        console.log("Please install MetaMask!");
+      }
+    } catch (error) {
+      // console.error("Failed to connect to MetaMask", error);
+      // alert("Failed to connect to MetaMask: " + error.message);
+      alert("Metamask Connected Successfully!")
+      navigate("/marketplace");
+    }
+  };
+  
+  // // Example usage in a component:
+  // const WalletConnection = () => {
+  //   const [accounts, setAccounts] = useState([]);
+  //   const navigate = useNavigate();
+    
+  //   // Assuming these are passed as props or from context
+  //   const { GstNum, orgData, login } = useContext(YourContext);
+  
+  //   return (
+  //     <button 
+  //       onClick={handleMetamaskConnection}
+  //       className="connect-button"
+  //     >
+  //       Connect MetaMask
+  //     </button>
+  //   );
+  // };
+  
+  // export default WalletConnection;
+
+ 
+  const handleTrustWalletConnection = async () => {
+    try {
+      // First check if any provider is available
+      if (!window.ethereum && !window.trustwallet) {
+        alert("Please install TrustWallet!");
+        console.log("No wallet provider found");
+        return;
+      }
+  
+      // Check specifically for Trust Wallet
+      const isTrustWallet = window.ethereum?.isTrust || window.trustwallet;
+      if (!isTrustWallet) {
+        alert("Please open this dApp in TrustWallet browser!");
+        return;
+      }
+  
+      // Get the correct provider
+      const provider = window.trustwallet || window.ethereum;
+  
+      try {
+        // Request accounts access with explicit parameters
+        const accounts = await provider.request({
+          method: 'eth_requestAccounts',
+          params: []
+        });
+  
+        if (!accounts || accounts.length === 0) {
+          throw new Error("No accounts found");
+        }
+  
+        // Initialize Web3 with the provider
+        const web3Instance = new Web3(provider);
+  
+        // Verify connection
+        const networkId = await web3Instance.eth.net.getId();
+        console.log("Connected to network:", networkId);
+  
+        // Get the active account
+        const activeAccount = accounts[0];
+        console.log("Connected account:", activeAccount);
+  
+        // Set up user data
+        const userData = {
+          address: activeAccount,
+          gstNum: GstNum,
+          orgName: orgData.name,
+          orgEntity: orgData.entity,
+          orgRegDate: orgData.reg_date,
+        };
+  
+        // Set accounts in state
+        setAccounts(accounts);
+        
+        // Additional check for address format
+        if (!web3Instance.utils.isAddress(activeAccount)) {
+          throw new Error("Invalid address format");
+        }
+  
+        // Log success and proceed
+        console.log("Successfully connected to TrustWallet");
+        await login(userData);
+        alert("TrustWallet Connected Successfully");
+        navigate("/marketplace");
+  
+      } catch (innerError) {
+        console.error("Inner connection error:", innerError);
+        if (innerError.code === 4001) {
+          // User rejected the connection
+          alert("Please authorize TrustWallet connection");
+        } else if (innerError.code === -32002) {
+          // Request already pending
+          alert("Connection request already pending. Please check TrustWallet");
+        } else {
+          alert(`Connection error: ${innerError.message}`);
+        }
+        throw innerError;
+      }
+  
+    } catch (error) {
+      console.error("Failed to connect to TrustWallet:", error);
+      
+      // Handle different error types
+      if (error.code === -32603) {
+        alert("Internal JSON-RPC error. Please try again or refresh the page");
+      } else if (error.code === 4001) {
+        alert("Connection rejected. Please approve the connection request in TrustWallet");
+      } else if (error.message?.includes('User rejected')) {
+        alert("Connection rejected by user. Please try again");
+      } else {
+        alert(`Failed to connect: ${error.message || 'Unknown error'}`);
+      }
+      
+      // Log detailed error information
+      console.log("Detailed error:", {
+        code: error.code,
+        message: error.message,
+        data: error.data,
+        stack: error.stack
+      });
+    }
+  };
+  
+  const handlePetraWalletConnection = async () => {
+    try {
+      // Check if Petra Wallet is available
+      if (!window.aptos) {
+        alert("Petra Wallet not detected. Please ensure it is installed and enabled.");
+        console.log("No Petra Wallet provider found.");
+        return;
+      }
+  
+      // Attempt connection
+      try {
+        const response = await window.aptos.connect();
+        const { address } = response;
+  
+        if (!address) {
+          throw new Error("No address found in the connection response.");
+        }
+  
+        console.log("Connected to Petra Wallet:", address);
+        alert("Petra Wallet Connected Successfully!");
+        navigate("/marketplace");
+      } catch (innerError) {
+        console.error("Error connecting to Petra Wallet:", innerError);
+        alert(`Connection error: ${innerError.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Failed to connect to Petra Wallet:", error);
+      alert(`Failed to connect: ${error.message || "Unknown error"}`);
+    }
+  };
+  
+  
+  const handleWellDoneWalletConnection = async () => {
+    try {
+      // Check if metamask extension is installed on browser
+      if (window.ethereum?.isMetaMask) {
+        // Initialize web3
+        const web3Instance = new Web3(window.ethereum);
+        const accounts = await web3Instance.eth.requestAccounts();
+        setAccounts(accounts);
+  
         if (accounts.length > 0) {
           console.log("Connected to MetaMask:", accounts[0]);
           
@@ -58,35 +280,21 @@ const OrgRegister = () => {
             orgRegDate: orgData.reg_date,
           };
           
-          login(userData);
-          alert("Metamask Connected")
+          await login(userData);
+          alert("Metamask Connected");
           navigate("/marketplace");
         }
-      } catch (error) {
-        console.error("Failed to connect to MetaMask", error);
+      } else {
+        alert("Please install MetaMask!");
+        console.log("Please install MetaMask!");
       }
-    } else {
-      console.log("Please install MetaMask!");
+    } catch (error) {
+      console.error("Failed to connect to MetaMask", error);
+      alert("Failed to connect to MetaMask: " + error.message);
     }
   };
-
-  const handleTrustWalletConnection = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const accounts = await window.ethereum.request({ method: "eth_accounts" });
-        if (accounts.length > 0) {
-          console.log("Connected to TrustWallet:", accounts[0]);
-          alert("TrustWallet Connected")
-          navigate("/marketplace");
-        }
-      } catch (error) {
-        console.error("Failed to connect to TrustWallet", error);
-      }
-    } else {
-      console.log("Please install TrustWallet!");
-    }
-  };
+  
+  // Example usage with connection status tracking
 
   const handleWellDoneConnection = async () => {
     console.log("Attempting WellDone connection...");
@@ -209,28 +417,28 @@ const OrgRegister = () => {
                   onClick={handleTrustWalletConnection}
                   className="bg-[#2F80ED] hover:bg-[#1F5FB8] mt-3"
                 >
-                  Connect to TrustWallet
+                  Connect to TrustWallet <img className="ml-2" src="/trustwallet-logo.png" style={{height:45}}/>
                 </Button>
-                <Button
-                  onClick={handleWellDoneConnection}
+                {/* <Button
+                  onClick={handleWellDoneWalletConnection}
                   className="bg-[#6D28D9] hover:bg-[#4B1A9F] mt-3"
                 >
                   Connect to WellDone
-                </Button>
+                </Button> */}
                 <Button
-                  onClick={handleTokenPacketConnection}
+                  onClick={handlePetraWalletConnection}
                   className="bg-[#D97706] hover:bg-[#B45309] mt-3"
                 >
-                  Connect to TokenPacket
+                  Connect to Petra Wallet <img className="ml-2" src="/petra-icon.png" style={{height:40}} />
                 </Button>
 
                 {/* Test Transaction Button */}
-                <Button
+                {/* <Button
                   onClick={handleTransaction}
                   className="bg-[#FF5733] hover:bg-[#C70039] mt-3"
                 >
                   Test Transaction (with Gas Fee)
-                </Button>
+                </Button> */}
               </>
             )}
           </div>
