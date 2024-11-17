@@ -81,13 +81,13 @@ const OrgRegister = () => {
         if (accounts.length > 0) {
           console.log("Connected to MetaMask:", accounts[0]);
           
-          // const userData = {
-          //   address: accounts[0],
-          //   gstNum: GstNum,
-          //   orgName: orgData.name,
-          //   orgEntity: orgData.entity,
-          //   orgRegDate: orgData.reg_date,
-          // };
+          const userData = {
+            address: accounts[0],
+            gstNum: GstNum,
+            orgName: orgData.name,
+            orgEntity: orgData.entity,
+            orgRegDate: orgData.reg_date,
+          };
           
           await login(userData);
           alert("Metamask Connected");
