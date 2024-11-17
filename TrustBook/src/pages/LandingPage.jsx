@@ -14,7 +14,7 @@ const LandingPage = () => {
           "Secure your identity with Aadhaar verification, ensuring a trustworthy community.",
       },
       {
-        title: "MetaMask Integration",
+        title: "Petra Integration",
         description:
           "Login securely using your MetaMask wallet for enhanced protection.",
       },
@@ -36,9 +36,9 @@ const LandingPage = () => {
           "Establish credibility with GST-verified business accounts, building trust with your audience.",
       },
       {
-        title: "Secure MetaMask Login",
+        title: "Secure Petra and Other Wallet's Login",
         description:
-          "Access your organization's account securely using MetaMask integration.",
+          "Access your organization's account securely using Petra integration.",
       },
       {
         title: "Authentic Audience Engagement",
