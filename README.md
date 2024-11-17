@@ -87,6 +87,9 @@ Used to interact with majority of components in the project. Aptos is very fast,
 ### Vite+React-
 Components used to build the front-end.  
 
+### Petra Wallet
+A fast and easy to use wallet supporting Aptos chain.
+
 # Additions-
 
 ## BlockEstate RWA-
