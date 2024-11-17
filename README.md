@@ -4,7 +4,8 @@
 For front-end <br />
 **Vite** <br />
 **React** <br />
-**Node.js** <br /> <br />
+**Node.js** <br /> 
+**web3 module** (npm i web3) <br /> <br />
 For smart contract(development only) <br />
 **Rust** <br />
 **Move** <br />
