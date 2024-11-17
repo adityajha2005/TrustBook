@@ -1,0 +1,21 @@
+[package]
+name = "social_fi"
+version = "1.0.0"
+
+[addresses]
+social_fi = "0x90ab3440ee5b380dfdc73f3e13878fc71285be3e7a2e8e2840346210941fcf69"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dependencies.AptosStdlib]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-stdlib"
+
+[dependencies.AptosToken]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-token"
