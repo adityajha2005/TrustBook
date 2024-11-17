@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const OrgSignin = () => {
-  const navigate = useNavigate(); // Use the hook to get the navigate function
+  const navigate = useNavigate();
 
   const handleMetmaskConnection = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -11,7 +11,7 @@ const OrgSignin = () => {
         const accounts = await window.ethereum.request({ method: "eth_accounts" });
         if (accounts.length > 0) {
           console.log("Connected to MetaMask:", accounts[0]);
-          navigate("/marketplace"); // Use the navigate function to change routes
+          navigate("/marketplace");
         }
       } catch (error) {
         console.error("Failed to connect to MetaMask", error);
